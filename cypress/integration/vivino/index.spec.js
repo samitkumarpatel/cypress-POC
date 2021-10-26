@@ -1,8 +1,10 @@
 /// <reference types="cypress" />
 
 describe('vivino web test', () => {
+
     beforeEach(() => {
-      cy.visit('https://www.vivino.com/')
+      // this will pick the son element baseUrl from cypress.json
+      cy.visit('/')
     })
   
     it('Should display the webpage ', () => {
@@ -10,12 +12,28 @@ describe('vivino web test', () => {
     })
   
     
-    it('search result should show some result', () => {
+    it.only('search result should show some result', () => {
       const searchText = 'Masseria'
-      cy.get('input.searchBar__searchInput--2Nf0D').type(`${searchText}{enter}`)
-      cy.get('.search-results-list>div').each(($el, index, $list) => {
-        console.log($el, index, $list)
+
+      //if not button - use this way
+      cy.get('input[name="q"]').type(`${searchText}{enter}`)
+      const customJSON={}
+      cy.screenshot()
+      cy.get('.search-results-list>.card-lg').each(($el, index, $list) => {
+        customJSON[index]=$el.text()
+        //cy.log($el, index, $list)
+      }).then(()=> {
+        cy.log(JSON.stringify(customJSON))
       })
+      
+    })
+    
+    //run this test only - it.only, it.skip
+    it('sear auto select capture',() => {
+      const searchText = 'Masseria'
+      
+      //if no button to submit the form - use this way
+      cy.get('input[name="q"]').type(`${searchText}{enter}`, { delay: 1000})
     })
     
 })
