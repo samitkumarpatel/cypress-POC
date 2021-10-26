@@ -3,8 +3,8 @@
 describe('vivino web test', () => {
 
     beforeEach(() => {
-      // this will pick the son element baseUrl from cypress.json
-      cy.visit('/')
+      // / will pick the json element baseUrl from cypress.json
+      cy.visit('https://www.vivino.com/')
     })
   
     it('Should display the webpage ', () => {
