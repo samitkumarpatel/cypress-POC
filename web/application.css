@@ -2,3 +2,8 @@ section{
     margin-top: 20px;
     margin-bottom: 60px;
 }
+
+div.column__border {
+    border: 1px solid gray;
+    border-radius: 20px;
+}
