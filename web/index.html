@@ -69,19 +69,20 @@
             <div class="col-3 column__border">
               <p>This form is for to create new / update existing department</p>
               <hr>
-              <div class="mb-3">
-                <label for="inputIdLabel" class="form-label">Id</label>
-                <input v-model="department.id" type="text" class="form-control" id="inputText" aria-describedby="inputIdHelp" disabled>
-                <div id="inputIdHelp" class="form-text">This field is auto generated!</div>
-              </div>
+              <form @submit.prevent="save">
+                <div class="mb-3">
+                  <label for="inputIdLabel" class="form-label">Id</label>
+                  <input v-model="department.id" type="text" class="form-control" id="inputText" aria-describedby="inputIdHelp" disabled>
+                  <div id="inputIdHelp" class="form-text">This field is auto generated!</div>
+                </div>
 
-              <div class="mb-3">
-                <label for="inputNameLabel" class="form-label">Name</label>
-                <input v-model="department.name" type="text" class="form-control" id="inputText" aria-describedby="inputNameHelp">
-                <div id="inputNameHelp" class="form-text">ex. Information Technology / IT</div>
-              </div>
-
-              <button type="submit" class="btn btn-primary" @click="save">{{ department.id == '' ? 'Submit' : 'Update'}}</button>
+                <div class="mb-3">
+                  <label for="inputNameLabel" class="form-label">Name</label>
+                  <input v-model="department.name" type="text" class="form-control" id="inputText" aria-describedby="inputNameHelp">
+                  <div id="inputNameHelp" class="form-text">ex. Information Technology / IT</div>
+                </div>
+                <button type="submit" class="btn btn-primary">{{ department.id == '' ? 'Submit' : 'Update'}}</button>
+              </form>
             </div>
 
             <div class="col-sm-1"></div>
@@ -98,7 +99,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="department in $store.state.departments">
+                  <tr v-for="department in departmentList">
                     <td>{{department.id}}</td>
                     <td>{{department.name}}</td>
                     <td>

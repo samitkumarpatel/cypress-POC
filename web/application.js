@@ -1,3 +1,4 @@
+const API_URI = "http://localhost:3000"
 const Home = { template: '<h3>Welcome to the portal!</h3>'}
 const Navbar = { template: '#navbar', props:['nav'] }
 
@@ -13,6 +14,7 @@ const Department = {
     }
   },
   methods: {
+    ...Vuex.mapActions(["addDepartment", "fetchDepartments", "updateDepartment", "deleteDepartment  "]),
     info: function(id) {
       console.log(store.getters.departmentById(id))
     },
@@ -20,7 +22,7 @@ const Department = {
       this.department = store.getters.departmentById(id)
     },
     save: function() {
-      store.commit('newDepartment',this.department)
+      this.addDepartment(this.department)
     },
     update: function(id) {
       this.$store.commit('updateDepartment',id, this.department)
@@ -32,8 +34,9 @@ const Department = {
       console.log(e.data)
     }
   },
+  computed: Vuex.mapGetters(["departmentList"]),
   created() {
-    this.departments = store.commit('allDepartment')
+    this.fetchDepartments()
   } 
 }
 
@@ -53,34 +56,65 @@ const router = new VueRouter({
 
 const store = new Vuex.Store({
   state: {
-    departments: []
-  },
-  mutations: {
-    allDepartment (state) {
-      state.departments = [
-        { id: 1, name: "IT"},
-        { id: 2, name: "HR"}
-      ]
-    },
-    newDepartment (state, department) {
-      state.departments.push(department)
-    },
-    updateDepartment (state, id, department) {
-      state.departments
-              .filter( d => d.id===id)
-              .map( d => {
-                d.name = department.name
-                state.departments.splash(id,1,d)
-              })
-    },
-    deleteDepartment (state, id) {
-      
-    }
+    departments: [
+      { id: 1, name: "IT"},
+      { id: 2, name: "HR"}
+    ]
   },
   getters: {
-    departmentById: (state) => (id) => {
-      return state.departments.find(d => d.id === id )
+    departmentList: state => state.departments
+  },
+  actions: {
+    fetchDepartments({commit}) {
+      axios.get(API_URI+"/department")
+        .then( response => {
+          commit("setDepartments", response.data)
+        })
+        .catch( error => {
+
+        })
+    },
+    addDepartment({commit}, department) {
+      axios.post(API_URI+"/department", department)
+        .then( response => {
+          commit("addNewDepartment", response.data)
+        })
+        .catch( error => {
+
+        })
+    },
+    updateDepartment({commit}, id, department) {
+      axios.put(API_URI+"/department/"+id, department)
+        .then( response => {
+          commit("editDepartment", response.data)
+        })
+        .catch( error => {
+
+        })
+    },
+    deleteDepartment({commit}, id) {
+      axios.delete(API_URI+"/department/"+id)
+        .then( response => {
+          commit("removeDepartment", id)
+        })
+        .catch( error => {
+
+        })
     }
+  },
+  mutations: {
+    setDepartments: (state, departments) => {
+      state.departments = departments
+    },
+    addNewDepartment:(state, department) => state.departments.unshift(department),
+    editDepartment: (state, department) => {
+      //array replacement logic      
+      console.log(department)
+    },
+    removeDepartment: (state, id) => (
+      state.departments.filter(dept => dept.id !== id),
+      state.departments.splice(dept => dept.id, 1)
+    )
   }
 })
 
