@@ -1,0 +1,32 @@
+{
+  "department": [
+    {
+      "id": 1,
+      "name": "Test Update"
+    },
+    {
+      "name": "HR",
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "name": "Finance",
+      "active": true,
+      "id": 4
+    },
+    {
+      "id": 0.44705341348356065,
+      "name": "Test Update Slaes"
+    }
+  ],
+  "employee": [
+    {
+      "id": 1,
+      "name": "",
+      "age": "",
+      "department": "1"
+    }
+  ]
+}
